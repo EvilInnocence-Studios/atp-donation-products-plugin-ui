@@ -1,4 +1,5 @@
 import { IUpdater } from "@core/lib/useUpdater";
+import { IDonatableProduct } from "@donation-products-plugin-shared/product/types";
 import { storePlugins } from "@store/lib/plugin/slots";
 import { Space, Switch } from "antd";
 
