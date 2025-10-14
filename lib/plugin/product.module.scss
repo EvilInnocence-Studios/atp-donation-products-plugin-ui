@@ -1,0 +1,34 @@
+.addToCart {
+    display: flex;
+    :global(.ant-input-group-wrapper) {
+        border: solid 1px var(--borderColor);
+        flex-grow: 1;
+        * {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    &.large {
+        display: block;
+        input {
+            font-size: 1.5rem;
+        }
+        :global(.ant-input-group-wrapper) {
+            width: 100%;
+            margin-bottom: var(--paddingSmall);
+            * {
+                border-radius: var(--borderRadius);
+            }
+        }
+        button {
+            font-size: 1.5rem;
+            width: 100%;
+            border-radius: var(--borderRadius);
+            padding: var(--paddingLarge);
+        }
+    }
+}
