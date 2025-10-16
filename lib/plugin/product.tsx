@@ -121,5 +121,14 @@ export const registerPlugins = () => {
         title: "My Donations",
         icon: faHandHoldingDollar,
         component: UserDonationList,
-    })
+    });
+
+    // Add donation list to admin user manager
+    uacPlugins.userManager.tabs.register({
+        priority: 900,
+        key: "donations",
+        title: "Donations",
+        icon: faHandHoldingDollar,
+        component: ({userId}) => <UserDonationList userId={userId} title="Donations"/>,
+    });
 }
