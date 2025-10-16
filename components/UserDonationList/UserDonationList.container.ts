@@ -1,19 +1,17 @@
-import { createInjector, inject, mergeProps } from "unstateless";
-import {UserDonationListComponent} from "./UserDonationList.component";
-import {IUserDonationListInputProps, UserDonationListProps, IUserDonationListProps} from "./UserDonationList.d";
-import { useLoggedInUser } from "@uac/lib/login/services";
-import { SafeUser } from "@uac-shared/user/types";
-import { useEffect, useState } from "react";
-import { useLoaderAsync } from "@core/lib/useLoader";
-import { useNavigate } from "react-router";
 import { services } from "@core/lib/api";
+import { useLoaderAsync } from "@core/lib/useLoader";
 import { IDonation } from "@donation-products-plugin-shared/donation/types";
+import { SafeUser } from "@uac-shared/user/types";
+import { useLoggedInUser } from "@uac/lib/login/services";
+import { useEffect, useState } from "react";
+import { createInjector, inject, mergeProps } from "unstateless";
+import { UserDonationListComponent } from "./UserDonationList.component";
+import { IUserDonationListInputProps, IUserDonationListProps, UserDonationListProps } from "./UserDonationList.d";
 
 const injectUserDonationListProps = createInjector(({userId}:IUserDonationListInputProps):IUserDonationListProps => {
     const [loggedInUser] = useLoggedInUser();
     const [user, setUser] = useState<SafeUser>(loggedInUser.user);
     const loader = useLoaderAsync();
-    const navigate = useNavigate();
     const [donations, setDonations] = useState<IDonation[]>([]);
 
     useEffect(() => {
