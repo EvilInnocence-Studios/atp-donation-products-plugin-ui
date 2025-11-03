@@ -1,4 +1,5 @@
 import { services } from "@core/lib/api";
+import { overridable } from "@core/lib/overridable";
 import { useLoaderAsync } from "@core/lib/useLoader";
 import { IDonation } from "@donation-products-plugin-shared/donation/types";
 import { SafeUser } from "@uac-shared/user/types";
@@ -45,4 +46,4 @@ const connect = inject<IUserDonationListInputProps, UserDonationListProps>(merge
     injectUserDonationListProps,
 ));
 
-export const UserDonationList = connect(UserDonationListComponent);
+export const UserDonationList = overridable<IUserDonationListInputProps>(connect(UserDonationListComponent));
