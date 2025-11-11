@@ -35,7 +35,7 @@ export const registerPlugins = () => {
     storePlugins.product.price.register({
         priority: 900,
         filter: ({product}) => (product as IDonatableProduct).isSetYourOwnAmount,
-        plugin: () => <></>,
+        plugin: ({product}) => <>${product.price.toFixed(2)} and up</>,
     });
 
     // Show a donation form instead of the add to cart button
