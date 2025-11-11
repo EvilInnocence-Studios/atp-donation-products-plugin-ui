@@ -26,14 +26,15 @@ export const registerPlugins = () => {
         const {history:{entity:product}, updateToggle} = props as IUpdater<IDonatableProduct>;
 
         return <Space style={{width: "100%"}}>
-            Donation Product: <Switch checked={product.isDonation} onChange={updateToggle("isDonation")} checkedChildren="Yes" unCheckedChildren="No"/> 
+            Donation Product:   <Switch checked={product.isDonation}         onChange={updateToggle("isDonation")}         checkedChildren="Yes" unCheckedChildren="No"/> 
+            Set Your Own Price: <Switch checked={product.isSetYourOwnAmount} onChange={updateToggle("isSetYourOwnAmount")} checkedChildren="Yes" unCheckedChildren="No"/> 
         </Space>
     });
 
     // Show "pay what you want" for the product price
     storePlugins.product.price.register({
         priority: 900,
-        filter: ({product}) => (product as IDonatableProduct).isDonation,
+        filter: ({product}) => (product as IDonatableProduct).isSetYourOwnAmount,
         plugin: () => <></>,
     });
 
@@ -52,7 +53,7 @@ export const registerPlugins = () => {
             const createDonation = async () => {
                 const donation = await services().donation.start(user.user.id, {
                     productId: product.id,
-                    amount: price,
+                    amount: (product as IDonatableProduct).isSetYourOwnAmount ? price : product.price,
                     note,
                 });
                 return donation.transactionId;
@@ -74,7 +75,7 @@ export const registerPlugins = () => {
             return <div className={clsx([styles.addToCart, size && styles[size]])}>
                 <Modal title={<Snippet slug="donation-modal-title" />} open={modal.visible} onCancel={modal.close} footer={null}>
                     <Snippet slug="donation-modal-copy" />
-                    <Input
+                    {(product as IDonatableProduct).isSetYourOwnAmount && <Input
                         addonBefore="$"
                         value={price}
                         type="number"
@@ -82,7 +83,7 @@ export const registerPlugins = () => {
                         step={1}
                         onChange={onInputChange(onNumberChange(setPrice))}
                         style={{marginBottom: "1em"}}
-                    />
+                    />}
                     <Input.TextArea
                         value={note}
                         onChange={onInputChange(setNote)}
@@ -98,17 +99,17 @@ export const registerPlugins = () => {
                         }}
                     />
                 </Modal>
-                <Input
+                {(product as IDonatableProduct).isSetYourOwnAmount && <Input
                     addonBefore="$"
                     value={price}
                     type="number"
                     min={product.price}
                     step={1}
                     onChange={onInputChange(onNumberChange(setPrice))}
-                />
+                />}
                 <Button className={styles.donateButton} type="primary" onClick={modal.open}>
                     <FontAwesomeIcon icon={faHandHoldingDollar} />
-                    Donate
+                    {(product as IDonatableProduct).isSetYourOwnAmount ? "Pay What You Want" : "Donate Now"}
                 </Button>
             </div>;
         },
