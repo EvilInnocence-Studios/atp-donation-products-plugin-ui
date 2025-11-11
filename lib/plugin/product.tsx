@@ -42,7 +42,8 @@ export const registerPlugins = () => {
     storePlugins.cart.addButton.register({
         priority: 900,
         filter: ({product}) => (product as IDonatableProduct).isDonation || (product as IDonatableProduct).isSetYourOwnAmount,
-        plugin: ({product, size}) => {
+        plugin: ({product:p, size}) => {
+            const product = p as IDonatableProduct;
             const [price, setPrice] = useState(product.price);
             const modal = useModal();
             const [user] = useLoggedInUser();
@@ -53,7 +54,7 @@ export const registerPlugins = () => {
             const createDonation = async () => {
                 const donation = await services().donation.start(user.user.id, {
                     productId: product.id,
-                    amount: (product as IDonatableProduct).isSetYourOwnAmount ? price : product.price,
+                    amount: product.isSetYourOwnAmount ? price : product.price,
                     note,
                 });
                 return donation.transactionId;
@@ -73,9 +74,14 @@ export const registerPlugins = () => {
                 );        
 
             return <div className={clsx([styles.addToCart, size && styles[size]])}>
-                <Modal title={<Snippet slug="donation-modal-title" />} open={modal.visible} onCancel={modal.close} footer={null}>
-                    <Snippet slug="donation-modal-copy" />
-                    {(product as IDonatableProduct).isSetYourOwnAmount && <Input
+                <Modal
+                    title={<Snippet slug={product.isDonation ? "donation-modal-title" : "pwyw-modal-title"} />}
+                    open={modal.visible}
+                    onCancel={modal.close}
+                    footer={null}
+                >
+                    <Snippet slug={product.isDonation ? "donation-modal-copy" : "pwyw-modal-copy"} /><br/>
+                    {product.isSetYourOwnAmount && <Input
                         addonBefore="$"
                         value={price}
                         type="number"
@@ -84,10 +90,14 @@ export const registerPlugins = () => {
                         onChange={onInputChange(onNumberChange(setPrice))}
                         style={{marginBottom: "1em"}}
                     />}
+                    {!product.isSetYourOwnAmount
+                        ? <p>Your donation amount is <strong>${product.price.toFixed(2)}</strong></p>
+                        : <p>You can choose any amount at or above <strong>${product.price.toFixed(2)}</strong></p>
+                    }
                     <Input.TextArea
                         value={note}
                         onChange={onInputChange(setNote)}
-                        placeholder="Add a note to your donation (optional)"
+                        placeholder={`Add a note to your ${product.isDonation ? "donation" : "purchase"} (optional)`}
                         rows={4}
                         style={{marginBottom: "1em"}}
                     />
@@ -99,7 +109,7 @@ export const registerPlugins = () => {
                         }}
                     />
                 </Modal>
-                {(product as IDonatableProduct).isSetYourOwnAmount && <Input
+                {product.isSetYourOwnAmount && <Input
                     addonBefore="$"
                     value={price}
                     type="number"
@@ -107,9 +117,9 @@ export const registerPlugins = () => {
                     step={1}
                     onChange={onInputChange(onNumberChange(setPrice))}
                 />}
-                <Button className={styles.donateButton} type="primary" onClick={modal.open}>
+                <Button className={clsx([product.isSetYourOwnAmount && styles.pwywBtn])} type="primary" onClick={modal.open}>
                     <FontAwesomeIcon icon={faHandHoldingDollar} />
-                    {(product as IDonatableProduct).isSetYourOwnAmount ? "Pay What You Want" : "Donate Now"}
+                    {product.isDonation ? "Donate Now" : "Pay What You Want"}
                 </Button>
             </div>;
         },
