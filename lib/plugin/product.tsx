@@ -35,7 +35,7 @@ export const registerPlugins = () => {
     storePlugins.product.price.register({
         priority: 900,
         filter: ({product}) => (product as IDonatableProduct).isSetYourOwnAmount,
-        plugin: ({product}) => <>${product.price.toFixed(2)} and up</>,
+        plugin: ({product}) => <span>${product.price.toFixed(2)} and up</span>,
     });
 
     // Show a donation form instead of the add to cart button
@@ -119,7 +119,7 @@ export const registerPlugins = () => {
                 />}
                 <Button className={clsx([product.isSetYourOwnAmount && styles.pwywBtn])} type="primary" onClick={modal.open}>
                     <FontAwesomeIcon icon={faHandHoldingDollar} />
-                    {product.isDonation ? "Donate Now" : "Pay What You Want"}
+                    {product.isDonation ? "Donate Now" : "Name Your Price"}
                 </Button>
             </div>;
         },
