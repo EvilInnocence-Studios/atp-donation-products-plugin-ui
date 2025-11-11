@@ -41,7 +41,7 @@ export const registerPlugins = () => {
     // Show a donation form instead of the add to cart button
     storePlugins.cart.addButton.register({
         priority: 900,
-        filter: ({product}) => (product as IDonatableProduct).isDonation,
+        filter: ({product}) => (product as IDonatableProduct).isDonation || (product as IDonatableProduct).isSetYourOwnAmount,
         plugin: ({product, size}) => {
             const [price, setPrice] = useState(product.price);
             const modal = useModal();
