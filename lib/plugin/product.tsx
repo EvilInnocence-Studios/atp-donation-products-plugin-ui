@@ -1,7 +1,7 @@
 import { Snippet } from "@common/components/Snippet";
 import { services } from "@core/lib/api";
 import { flash } from "@core/lib/flash";
-import { onInputChange, onNumberChange } from "@core/lib/onInputChange";
+import { onInputChange } from "@core/lib/onInputChange";
 import { useLoaderAsync } from "@core/lib/useLoader";
 import { useModal } from "@core/lib/useModal";
 import { IUpdater } from "@core/lib/useUpdater";
@@ -44,7 +44,7 @@ export const registerPlugins = () => {
         filter: ({product}) => (product as IDonatableProduct).isDonation || (product as IDonatableProduct).isSetYourOwnAmount,
         plugin: ({product:p, size}) => {
             const product = p as IDonatableProduct;
-            const [price, setPrice] = useState(product.price);
+            const [price, setPrice] = useState<string>(`${product.price}`);
             const modal = useModal();
             const [user] = useLoggedInUser();
             const [note, setNote] = useState("");
@@ -54,7 +54,7 @@ export const registerPlugins = () => {
             const createDonation = async () => {
                 const donation = await services().donation.start(user.user.id, {
                     productId: product.id,
-                    amount: product.isSetYourOwnAmount ? price : product.price,
+                    amount: product.isSetYourOwnAmount ? parseInt(price, 10) : product.price,
                     note,
                 });
                 return donation.transactionId;
@@ -84,10 +84,7 @@ export const registerPlugins = () => {
                     {product.isSetYourOwnAmount && <Input
                         addonBefore="$"
                         value={price}
-                        type="number"
-                        min={product.price}
-                        step={1}
-                        onChange={onInputChange(onNumberChange(setPrice))}
+                        onChange={onInputChange(setPrice)}
                         style={{marginBottom: "1em"}}
                     />}
                     {!product.isSetYourOwnAmount
@@ -112,10 +109,7 @@ export const registerPlugins = () => {
                 {product.isSetYourOwnAmount && <Input
                     addonBefore="$"
                     value={price}
-                    type="number"
-                    min={product.price}
-                    step={1}
-                    onChange={onInputChange(onNumberChange(setPrice))}
+                    onChange={onInputChange(setPrice)}
                 />}
                 <Button className={clsx([product.isSetYourOwnAmount && styles.pwywBtn])} type="primary" onClick={modal.open}>
                     <FontAwesomeIcon icon={faHandHoldingDollar} />
