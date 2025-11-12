@@ -3,6 +3,7 @@
     :global(.ant-input-group-wrapper) {
         border: solid 1px var(--borderColor);
         flex-grow: 1;
+        margin-top: var(--padding);
         button.pwydBtn {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
@@ -11,6 +12,7 @@
     button.pwywBtn {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+        margin-top: var(--padding);
     }
     &.large {
         display: block;
