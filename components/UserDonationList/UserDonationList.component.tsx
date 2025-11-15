@@ -3,8 +3,9 @@ import {UserDonationListProps} from "./UserDonationList.d";
 import styles from './UserDonationList.module.scss';
 import clsx from "clsx";
 import { Date } from "@core/components/Date";
+import { overridable } from "@core/lib/overridable";
 
-export const UserDonationListComponent = ({user:_user, donations, isLoading, title}:UserDonationListProps) =>
+export const UserDonationListComponent = overridable(({user:_user, donations, isLoading, title}:UserDonationListProps) =>
     <Spin spinning={isLoading}>
         <h1 className={styles.donationTitle}>
             {title || <>My Donations</>}
@@ -24,4 +25,5 @@ export const UserDonationListComponent = ({user:_user, donations, isLoading, tit
                 </div>
             )}
         </div>
-    </Spin>;
+    </Spin>
+);
