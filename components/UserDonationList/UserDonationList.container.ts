@@ -45,5 +45,6 @@ const injectUserDonationListProps = createInjector(({userId}:IUserDonationListIn
 const connect = inject<IUserDonationListInputProps, UserDonationListProps>(mergeProps(
     injectUserDonationListProps,
 ));
+export const connectUserDonationList = connect;
 
 export const UserDonationList = overridable<IUserDonationListInputProps>(connect(UserDonationListComponent));
