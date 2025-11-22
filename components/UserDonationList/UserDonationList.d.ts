@@ -11,6 +11,7 @@ export declare interface IUserDonationListProps {
 export declare interface IUserDonationListInputProps {
     userId?: string;
     title?: string;
+    classes?: any;
 }
 
 export type UserDonationListProps = IUserDonationListInputProps & IUserDonationListProps;
