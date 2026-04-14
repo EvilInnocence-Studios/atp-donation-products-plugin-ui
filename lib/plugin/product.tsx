@@ -34,7 +34,7 @@ export const registerPlugins = () => {
     // Show "pay what you want" for the product price
     storePlugins.product.price.register({
         priority: 900,
-        filter: ({product}) => (product as IDonatableProduct).isSetYourOwnAmount,
+        filter: ({product}) => !!product && (product as IDonatableProduct).isSetYourOwnAmount,
         plugin: () => <div>Donate</div>,
     });
 
