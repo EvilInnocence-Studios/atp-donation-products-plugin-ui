@@ -1,4 +1,3 @@
-import { Snippet } from "@common/components/Snippet";
 import { services } from "@core/lib/api";
 import { flash } from "@core/lib/flash";
 import { onInputChange } from "@core/lib/onInputChange";
@@ -19,6 +18,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import styles from "./product.module.scss";
+import { Setting } from "@common/components/Setting";
 
 export const registerPlugins = () => {
     // Add a toggle for donation products in the product editor details section
@@ -75,12 +75,12 @@ export const registerPlugins = () => {
 
             return <div className={clsx([styles.addToCart, size && styles[size]])}>
                 <Modal
-                    title={<Snippet slug={product.isDonation ? "donation-modal-title" : "pwyw-modal-title"} />}
+                    title={<Setting id={product.isDonation ? "donationProduct.donationModalTitle" : "donationProduct.pwywModalTitle"} />}
                     open={modal.visible}
                     onCancel={modal.close}
                     footer={null}
                 >
-                    <Snippet slug={product.isDonation ? "donation-modal-copy" : "pwyw-modal-copy"} /><br/>
+                    <Setting id={product.isDonation ? "donationProduct.donationModalCopy" : "donationProduct.pwywModalCopy"} /><br/>
                     {product.isSetYourOwnAmount && <Input
                         addonBefore="$"
                         value={price}
