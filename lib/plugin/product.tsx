@@ -106,11 +106,6 @@ export const registerPlugins = () => {
                         }}
                     />
                 </Modal>
-                {product.isSetYourOwnAmount && <Input
-                    addonBefore="$"
-                    value={price}
-                    onChange={onInputChange(setPrice)}
-                />}
                 <Button className={clsx([product.isSetYourOwnAmount && styles.pwywBtn])} type="primary" onClick={modal.open}>
                     <FontAwesomeIcon icon={faHandHoldingDollar} />
                     {product.isDonation ? "Donate Now" : "Pick Your Price"}
